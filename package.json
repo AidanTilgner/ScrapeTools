@@ -8,7 +8,7 @@
     "build": "node ./esbuild.config.js"
   },
   "bin": {
-    "read-site-content": "./dist/read_site_content.js"
+    "read-site-content": "./dist/read_site_content.cjs"
   },
   "keywords": [],
   "author": "",

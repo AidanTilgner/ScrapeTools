@@ -11,12 +11,16 @@ const __dirname = dirname(__filename);
 const srcDir = path.join(__dirname, "src");
 
 // Read all files in the src directory
-const files = fs.readdirSync(srcDir).filter((file) => file.endsWith(".js"));
+const files = fs
+  .readdirSync(srcDir)
+  .filter((file) => file.endsWith(".ts") || file.endsWith(".js"));
 
 // Create a build for each file
 files.forEach((file) => {
   const filePath = path.join(srcDir, file);
-  const outFilePath = path.join(__dirname, "dist", file);
+  const outFilePath = path
+    .join(__dirname, "dist", file)
+    .replace(/\.ts$/, ".cjs");
 
   build({
     entryPoints: [filePath],
@@ -24,6 +28,10 @@ files.forEach((file) => {
     platform: "node",
     outfile: outFilePath,
     minify: true, // Optional: Minifies the output for smaller file size
+    loader: {
+      ".ts": "ts",
+      ".js": "js",
+    },
   })
     .then(() => {
       // Add the shebang line
