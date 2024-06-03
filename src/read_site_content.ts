@@ -1,6 +1,8 @@
+#!/usr/bin/env node
+
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import puppeteer from "../node_modules/puppeteer/lib/types";
+import puppeteer from "puppeteer";
 
 const argv = await yargs(hideBin(process.argv))
   .option("url", {
@@ -32,8 +34,19 @@ switch (site) {
     await page.goto(url, { waitUntil: "domcontentloaded" });
 
     const articleContent = await page.evaluate(() => {
-      // grab the text content of the article by reading what's inside the 'available-content' div
-      return document.querySelector(".available-content")?.textContent?.trim();
+      const elementContents: string[] = [];
+      const availableContent = document.querySelector(".available-content");
+      const contentBody = availableContent?.querySelector(".body");
+      if (availableContent && contentBody) {
+        for (const child of contentBody.children) {
+          if (child.textContent) {
+            elementContents.push(child.textContent);
+          }
+        }
+
+        return elementContents.join("\r\n");
+      }
+      return "";
     });
     if (!articleContent) {
       console.error("Error parsing article content");

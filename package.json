@@ -5,7 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc"
+    "build": "node ./esbuild.config.js"
+  },
+  "bin": {
+    "read-site-content": "./dist/read_site_content.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +20,7 @@
   "devDependencies": {
     "@types/node": "^20.14.0",
     "@types/yargs": "^17.0.32",
+    "esbuild": "0.21.4",
     "typescript": "^5.4.5"
   }
 }
